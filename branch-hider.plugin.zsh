@@ -23,17 +23,15 @@ show_branches_minus_hidden() {
 }
 
 get_hidden_branch_list() {
-  IFS="\n"
+  local IFS="\n"
   hidden_branches=$(sqlite3 branches < get_hidden_branches.sql)
   eval "hidden_branches=($hidden_branches)"
-  IFS=""
 }
 
 get_branch_list() {
-  IFS="\n"
+  local IFS="\n"
   branches=$(git for-each-ref --shell --format='%(refname:short)' refs/heads/)
   eval "branches=($branches)"
-  IFS=""
 }
 
 hide_branch() {
