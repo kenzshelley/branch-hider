@@ -3,6 +3,9 @@ alias sb='show_branch'
 alias gb='show_branches_minus_hidden'
 alias gba='git branch'
 
+CREATE=`cat create_table.sql`
+GET_HIDDEN=`cat get_hidden_branches.sql`
+
 show_branches_minus_hidden() {
   get_hidden_branch_list;
   get_branch_list;
@@ -24,7 +27,7 @@ show_branches_minus_hidden() {
 
 get_hidden_branch_list() {
   local IFS="\n"
-  hidden_branches=$(sqlite3 branches < get_hidden_branches.sql)
+  hidden_branches=$(sqlite3 branches $GET_HIDDEN)
   eval "hidden_branches=($hidden_branches)"
 }
 
@@ -35,7 +38,7 @@ get_branch_list() {
 }
 
 hide_branch() {
-  sqlite3 branches < create_table.sql;
+  sqlite3 branches $CREATE;
   sqlite3 branches "insert into hidden_branches values('$1')"
 }
 
