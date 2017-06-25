@@ -3,7 +3,7 @@ alias sb='show_branch'
 alias gb-shown='show_branches_minus_hidden'
 alias gb='gb-shown'
 alias gb-all='git branch'
-alias gba='gba'
+alias gba='gb-all'
 
 TABLE="hidden_branches"
 CREATE="CREATE TABLE IF NOT EXISTS $TABLE (branch_name varchar(256));"
