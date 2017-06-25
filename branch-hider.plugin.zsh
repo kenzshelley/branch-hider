@@ -3,9 +3,10 @@ alias sb='show_branch'
 alias gb-shown='show_branches_minus_hidden'
 alias gb-all='git branch'
 
-CREATE=`cat create_table.sql`
-GET_HIDDEN=`cat get_hidden_branches.sql`
-TABLE_PATH="/tmp/hidden_branches"
+TABLE="hidden_branches"
+CREATE="CREATE TABLE IF NOT EXISTS $TABLE (branch_name varchar(256));"
+GET_HIDDEN="select branch_name from $TABLE;"
+TABLE_PATH="/tmp/branch-hider"
 
 show_branches_minus_hidden() {
   get_hidden_branch_list;
@@ -40,11 +41,14 @@ get_branch_list() {
 
 hide_branch() {
   sqlite3 $TABLE_PATH $CREATE;
-  sqlite3 $TABLE_PATH "insert into hidden_branches values('$1')"
+  local insert="insert into $TABLE values('$1')"
+  echo $insert
+  sqlite3 $TABLE_PATH $insert
 }
 
 show_branch() {
-  sqlite3 $TABLE_PATH "delete from hidden_branches where branch_name='$1'"
+  local delete="delete from $TABLE where branch_name='$1'"
+  sqlite3 $TABLE_PATH $delete
 }
 
 get_current_branch() { 
