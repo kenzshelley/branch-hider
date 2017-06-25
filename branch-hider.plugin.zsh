@@ -44,7 +44,6 @@ get_branch_list() {
 hide_branch() {
   sqlite3 $TABLE_PATH $CREATE;
   local insert="insert into $TABLE values('$1')"
-  echo $insert
   sqlite3 $TABLE_PATH $insert
 }
 
